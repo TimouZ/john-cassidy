@@ -74,7 +74,7 @@ def delete_setting(path, section, setting):
     with open(path, "w") as config_file:
         config.write(config_file)
 
-
+# Camera management functions
 class Camera:
     thread = None
     frame = None
@@ -114,3 +114,9 @@ class Camera:
                 if time.time() - cls.last_access > 10:
                     break
         cls.thread = None
+
+def generate_frame(camera):
+    while True:
+        frame = camera.get_frame()
+        yield ('--frame\r\n Content-Type: image/jpeg\r\n\r\n'.encode() + frame + '\r\n'.encode())
+
